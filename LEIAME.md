@@ -104,9 +104,9 @@ O programa reconhece a geração da placa pelo nome e aplica os limites dela. Os
 | Arquitetura | Núcleo (atenção/falha) | Hotspot (atenção/falha) | Diferença normal | Memória |
 |---|---|---|---|---|
 | NVIDIA RTX 50 (Blackwell) | 83 / 90 °C | sem sensor | — | GDDR7 95 / 105 °C |
-| NVIDIA RTX 40 (Ada) | 83 / 90 °C | 95 / 105 °C | < 15 °C | 100 / 108 °C |
-| NVIDIA RTX 30 (Ampere) | 83 / 92 °C | 95 / 105 °C | < 15 °C | 100 / 108 °C |
-| NVIDIA RTX 20 / GTX 16 | 80 / 88 °C | 95 / 105 °C | < 15 °C | 92 / 100 °C |
+| NVIDIA RTX 40 (Ada) | 83 / 90 °C | 95 / 105 °C | < 20 °C | 100 / 108 °C |
+| NVIDIA RTX 30 (Ampere) | 83 / 92 °C | 95 / 105 °C | < 20 °C | 100 / 108 °C |
+| NVIDIA RTX 20 / GTX 16 | 80 / 88 °C | 95 / 105 °C | < 20 °C | 92 / 100 °C |
 | AMD RX 9000 (RDNA 4) | 85 / 95 °C | 100 / 108 °C | 20–30 °C | 92 / 100 °C |
 | AMD RX 5000–7000 (RDNA 1–3) | 85 / 95 °C | 100 / 108 °C | < 25 °C | 92 / 100 °C |
 | Intel Arc B / A | 88 / 97 · 85 / 92 °C | 95 / 105 °C | < 20 °C | 90 / 100 °C |
