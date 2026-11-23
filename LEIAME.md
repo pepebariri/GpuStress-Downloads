@@ -196,6 +196,13 @@ Cada teste cria uma pasta em `Sessoes\` com estes arquivos:
 | `resumo.json` | Usado na comparação antes × depois |
 | `analise_queda.txt` | Só existe se o PC caiu durante o teste |
 
+**Quando a GPU para de responder**, o relatório diz se a fonte segurou a placa. Ele olha todas as entradas de 12 V da placa (entrada geral, slot PCIe e conectores de 6, 8 ou 16 pinos) nos 20 segundos antes da queda e compara com o repouso:
+- **Fonte descartada**: o 12 V ficou estável até a falha. A falta de energia não explica a queda; o defeito tende a estar na própria placa.
+- **Suspeita de alimentação**: alguma linha ficou abaixo de 11,04 V (norma PCIe) ou caiu mais de 5% em relação ao repouso. Repita com outra fonte e cabos dedicados antes de condenar a placa.
+- **Não foi possível avaliar**: a placa não informou a tensão de entrada. Repita com o HWiNFO aberto.
+
+O aviso de perda de vídeo pelo Telegram já leva essa conclusão.
+
 ## Linha de comando
 
 ```
@@ -208,6 +215,9 @@ GpuStress monitorar
 GpuStress monitorar --programa "C:\Jogos\jogo.exe"
 GpuStress cena3d --minutos 5
 GpuStress sensores-amd
+GpuStress analisa-queda "Sessoes\2026-11-23_10-00-00_rapido_..." [HH:mm:ss]
 ```
 
 `sensores-amd` lista tudo o que o driver AMD, o GPU-Z e o HWiNFO informam sobre a placa (útil para conferir uma placa nova).
+
+`analisa-queda` reavalia uma sessão já gravada: diz se a fonte segurou a placa no horário indicado (sem horário, usa a última leitura). Serve para testes antigos e para sessões trazidas de outro computador.
