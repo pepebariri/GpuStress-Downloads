@@ -82,7 +82,7 @@ Para editar os limites de temperatura, coloque um `gpu_db.json` ao lado do progr
 | Barramento PCIe | Envia e recebe 256 MB, compara e mede a banda; lê o link (Gen/x) | Dados corrompidos, link reduzido (x8/x4), capacitores AC, slot/riser |
 | VRAM (fria/quente) | 8 padrões, "moving inversions" e martelamento em ~90% da VRAM | Erro de gravação/leitura e qual bit falhou (chip, solda, tensão da memória) |
 | Cálculo (frio/quente) | Contas conferidas bit a bit com a CPU | Núcleo instável que erra antes de travar |
-| Cena 3D | Desenho da placa (estilo RTX 5090 na NVIDIA, RX 9070 XT na AMD, Arc na Intel) girando com as ventoinhas e o conector PCIe detalhados; ocupa quase toda a VRAM e confere os dados o tempo todo; a cada 5 s compara um quadro pixel a pixel | Artefatos, erro de VRAM com a GPU desenhando, engasgos, perda de vídeo |
+| Cena 3D | Desenho da placa (estilo RTX 5090 na NVIDIA, RX 9070 XT na AMD, Arc na Intel) girando com as ventoinhas e o conector PCIe detalhados; ocupa quase toda a VRAM e confere os dados o tempo todo; a cada 5 s compara um quadro pixel a pixel. Se o driver avisar falta de memória, a cena devolve um pouco da VRAM e continua (isso não é contado como perda de vídeo) | Artefatos, erro de VRAM com a GPU desenhando, engasgos, perda de vídeo |
 | Carga em degraus | Sobe a carga de 20% a 100% em passos de 5%; mostra hotspot, consumo, clock e tensão em cada degrau | Em que nível de carga aparece erro ou queda (VRM/fonte que só falham na média/alta, núcleo instável numa faixa) |
 | Carga máxima | Cálculo + tráfego por quase toda a VRAM, conferindo as contas a cada 10 s | Hotspot, diferença hotspot−núcleo, falta de corrente, throttling |
 | Fonte (CPU + GPU) | Placa em carga máxima e a CPU em todos os núcleos ao mesmo tempo | Fonte que não segura o PC inteiro: queda do +12 V (placa e placa-mãe), desligamento, CPU errando contas |
@@ -197,6 +197,14 @@ Cada teste cria uma pasta em `Sessoes\` com estes arquivos:
 | `analise_queda.txt` | Só existe se o PC caiu durante o teste |
 
 **Como confirmar o defeito na bancada:** logo depois dos defeitos, o relatório traz um roteiro para até 3 defeitos ou pontos de atenção. Os passos vão do mais simples ao mais trabalhoso: repetir o teste, baixar o clock, medir tensões, teste térmico chip a chip, trocar pasta e pads ou testar outra fonte. Cada passo diz o que o resultado significa. O roteiro é montado com o que o teste mediu, por exemplo em que etapa a GPU caiu e se o 12 V estava estável. Ele ajuda a confirmar a suspeita, não é uma certeza.
+
+**Ventoinha em 100% durante o teste (opcional):** marque a caixa na tela ou use `--ventoinha-max`. O programa fixa a ventoinha no máximo e devolve ao controle automático do driver no fim. Depois de 15 segundos ele confere se a placa obedeceu; se não obedeceu, avisa e o relatório registra. Funciona na maioria das NVIDIA e das AMD mais antigas; nas Radeon RX 7000/9000 o driver não aceita esse comando, e é preciso fixar pelo AMD Software.
+
+**Driver e BIOS:** o relatório registra a versão do driver (como o técnico conhece: "NVIDIA 582.78", "AMD Software Adrenalin 26.11.2"), a versão, o número de peça e a data da VBIOS. A comparação antes × depois mostra os dois e avisa se mudaram entre os testes.
+
+**Outros avisos do relatório:**
+- **Ventoinha quase parada com a placa quente:** a ventoinha ficou em até 25% com o núcleo ou o hotspot perto da faixa de atenção. Nas placas sem sensor de memória ou de VRM, esses componentes podem estar esquentando sem aparecer. Fixe a ventoinha em 100% e repita.
+- **Link PCIe abaixo da placa:** o link ficou em Gen1 ou Gen2 com a GPU ocupada numa placa Gen3 ou mais nova (atenção), ou uma geração abaixo da placa (só informação, pode ser o limite da placa-mãe).
 
 **Quando a GPU para de responder**, o relatório diz se a fonte segurou a placa. Ele olha todas as entradas de 12 V da placa (entrada geral, slot PCIe e conectores de 6, 8 ou 16 pinos) nos 20 segundos antes da queda e compara com o repouso:
 - **Fonte descartada**: o 12 V ficou estável até a falha. A falta de energia não explica a queda; o defeito tende a estar na própria placa.
